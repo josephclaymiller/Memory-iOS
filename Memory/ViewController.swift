@@ -33,6 +33,8 @@ class ViewController: UIViewController {
             if game.chooseCard(at: cardNumber){
                 print("Flipped card")
                 flipCount += 1
+            } else {
+                print("Can not select that card")
             }
             updateViewFromModel()
         } else {

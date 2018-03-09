@@ -50,6 +50,8 @@ class Memory {
                 cards[index].isFaceUp = true
                 indexOfFaceUpCard = index
             }
+        } else {
+            return false
         }
         return true
     }
