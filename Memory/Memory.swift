@@ -18,13 +18,21 @@ class Memory {
             let card = Card()
             cards += [card, card]
         }
-        // TODO: Shuffle the cards
+        // shuffle the cards
+        var shuffledCards = [Card]()
+        for _ in 0..<(numberOfPairsOfCards*2) {
+            let randomIndex = Int(arc4random_uniform(UInt32(cards.count)))
+            shuffledCards.append(cards.remove(at: randomIndex))
+        }
+        cards = shuffledCards
     }
     
-    func chooseCard(at index: Int) {
+    func chooseCard(at index: Int) -> Bool {
         if !cards[index].isMatched {
             // one card face up <- check if match
-            if let matchIndex = indexOfFaceUpCard, matchIndex != index {
+            if let matchIndex = indexOfFaceUpCard {
+                // can't select card already selected
+                if matchIndex == index { return false }
                 // check if cards match
                 if cards[matchIndex].identifier == cards[index].identifier {
                     cards[matchIndex].isMatched = true
@@ -43,6 +51,7 @@ class Memory {
                 indexOfFaceUpCard = index
             }
         }
+        return true
     }
     
     func resetGame() {

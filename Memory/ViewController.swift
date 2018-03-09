@@ -28,11 +28,12 @@ class ViewController: UIViewController {
     
     // TODO: Add new game button
     @IBAction func touchCard(_ sender: UIButton) {
-        print("Flipped card")
-        flipCount += 1
         if let cardNumber = cardButtons.index(of: sender) {
             print("card number = \(cardNumber)")
-            game.chooseCard(at: cardNumber)
+            if game.chooseCard(at: cardNumber){
+                print("Flipped card")
+                flipCount += 1
+            }
             updateViewFromModel()
         } else {
             print("chosen card not in card array")
