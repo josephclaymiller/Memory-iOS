@@ -30,6 +30,7 @@ class Memory {
         }
         cards = shuffledCards
     }
+    
     func chooseCard(at index: Int) -> Bool {
         if !cards[index].isMatched {
             // one card face up <- check if match
