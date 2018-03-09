@@ -10,23 +10,26 @@ import Foundation
 
 class Memory {
     var cards = [Card]()
-    
     var indexOfFaceUpCard: Int?
+    var flipCount = 0
     
     init(numberOfPairsOfCards: Int) {
         for _ in 1...numberOfPairsOfCards {
             let card = Card()
             cards += [card, card]
         }
-        // shuffle the cards
+        shuffleCards()
+    }
+    
+    // shuffle the cards
+    func shuffleCards() {
         var shuffledCards = [Card]()
-        for _ in 0..<(numberOfPairsOfCards*2) {
+        for _ in 0..<(cards.count) {
             let randomIndex = Int(arc4random_uniform(UInt32(cards.count)))
             shuffledCards.append(cards.remove(at: randomIndex))
         }
         cards = shuffledCards
     }
-    
     func chooseCard(at index: Int) -> Bool {
         if !cards[index].isMatched {
             // one card face up <- check if match
@@ -53,6 +56,7 @@ class Memory {
         } else {
             return false
         }
+        flipCount += 1
         return true
     }
     
@@ -61,5 +65,8 @@ class Memory {
             cards[cardIndex].isMatched = false
             cards[cardIndex].isFaceUp = false
         }
+        indexOfFaceUpCard = nil
+        flipCount = 0
+        shuffleCards()
     }
 }

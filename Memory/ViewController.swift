@@ -11,28 +11,36 @@ import UIKit
 class ViewController: UIViewController {
     let cardBackColor = UIColor.cyan
     lazy var game = Memory(numberOfPairsOfCards: (cardButtons.count + 1)/2)
-    var flipCount = 0 {
-        didSet {
-            flipCountLabel.text = "Flips: \(flipCount)"
-        }
-    }
     @IBOutlet weak var flipCountLabel: UILabel!
     @IBOutlet var cardButtons: [UIButton]!
-    var emojiChoices = ["😀","😁","😂","😃","😄","😅","😆","😇","😈","👿","😉","😊","☺️","😋","😌","😍","😎","😏","😐","😑","😒","😓","😔","😕","😖","😗","😘","😙","😚","😛","😜","😝","😞","😟","😠","😡","😢","😣","😤","😥","😦","😧","😨","😩","😪","😫","😬","😭","😮","😯","😰","😱","😲","😳","😴","😵","😶","😷","😸","😹","😺","😻","😼","😽","😾","😿","🙀"]
+    var emojiChoices = [String]()
+    var emojiArrays = [[String]]()
+    var faceEmojis = ["😀","😁","😂","😃","😄","😅","😆","😇","😈","👿","😉","😊","☺️","😋","😌","😍","😎","😏","😐","😑","😒","😓","😔","😕","😖","😗","😘","😙","😚","😛","😜","😝","😞","😟","😠","😡","😢","😣","😤","😥","😦","😧","😨","😩","😪","😫","😬","😭","😮","😯","😰","😱","😲","😳","😴","😵","😶","😷","😸","😹","😺","😻","😼","😽","😾","😿","🙀"]
+    var animalEmojis = ["🐀","🐁","🐭","🐹","🐂","🐃","🐄","🐮","🐅","🐆","🐯","🐇","🐰","🐈","🐱","🐎","🐴","🐏","🐑","🐐","🐓","🐔","🐤","🐣","🐥","🐦","🐧","🐘","🐪","🐫","🐗","🐖","🐷","🐽","🐕","🐩","🐶","🐺","🐻","🐨","🐼","🐵","🙈","🙉","🙊","🐒","🐉","🐲","🐊","🐍","🐢","🐸","🐋","🐳","🐬","🐙","🐟","🐠","🐡","🐚","🐌","🐛","🐜","🐝","🐞"]
+    var plantEmojis = ["🌱","🌲","🌳","🌴","🌵","🌷","🌸","🌹","🌺","🌻","🌼","💐","🌾","🌿","🍀","🍁","🍂","🍃","🍄","🌰"]
+    var foodEmojis = ["🍅","🍆","🌽","🍠","🍇","🍈","🍉","🍊","🍋","🍌","🍍","🍎","🍏","🍐","🍑","🍒","🍓","🍔","🍕","🍖","🍗","🍘","🍙","🍚","🍛","🍜","🍝","🍞","🍟","🍡","🍢","🍣","🍤","🍥","🍦","🍧","🍨","🍩","🍪","🍫","🍬","🍭","🍮","🍯","🍰","🍱","🍲","🍳"]
+
+    
     var emoji = [Int:String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        emojiArrays = [faceEmojis, animalEmojis, plantEmojis, foodEmojis]
+        emojiChoices = emojiArrays[0]
         updateViewFromModel()
     }
     
     // TODO: Add new game button
+    @IBAction func pressNewGameButton(_ sender: UIButton) {
+        game.resetGame()
+        updateViewFromModel()
+    }
+    
     @IBAction func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
             print("card number = \(cardNumber)")
             if game.chooseCard(at: cardNumber){
                 print("Flipped card")
-                flipCount += 1
             } else {
                 print("Can not select that card")
             }
@@ -43,6 +51,8 @@ class ViewController: UIViewController {
     }
     
     func updateViewFromModel() {
+        // Update flip count
+        flipCountLabel.text = "Flips: \(game.flipCount)"
         // Look at all the cards and see if there are matches
         for index in cardButtons.indices {
             let button = cardButtons[index]
