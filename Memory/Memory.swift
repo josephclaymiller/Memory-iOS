@@ -8,10 +8,16 @@
 
 import Foundation
 
+//TODO: Game Score
+// +2 points for each match
+// -1 point for each previously seen card in a mismatch
+
 class Memory {
     var cards = [Card]()
     var indexOfFaceUpCard: Int?
     var flipCount = 0
+    var score = 0
+    var seenCardIndicies = [Int]()
     
     init(numberOfPairsOfCards: Int) {
         for _ in 1...numberOfPairsOfCards {
@@ -33,7 +39,7 @@ class Memory {
     
     func chooseCard(at index: Int) -> Bool {
         if !cards[index].isMatched {
-            // one card face up <- check if match
+            // selecting second card, check if match
             if let matchIndex = indexOfFaceUpCard {
                 // can't select card already selected
                 if matchIndex == index { return false }
@@ -41,9 +47,20 @@ class Memory {
                 if cards[matchIndex].identifier == cards[index].identifier {
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
+                    score += 2
+                } else {
+                    // remove 1 point for each card seen before
+                    if seenCardIndicies.contains(matchIndex) {
+                        score -= 1
+                    }
+                    if seenCardIndicies.contains(index) {
+                        score -= 1
+                    }
                 }
                 cards[index].isFaceUp = true
                 indexOfFaceUpCard = nil
+                seenCardIndicies.append(matchIndex)
+                seenCardIndicies.append(index)
             } else {
                 // either no cards or 2 cards
                 // flip down all cards
@@ -55,6 +72,7 @@ class Memory {
                 indexOfFaceUpCard = index
             }
         } else {
+            // card is already matched, can not select
             return false
         }
         flipCount += 1
@@ -68,6 +86,7 @@ class Memory {
         }
         indexOfFaceUpCard = nil
         flipCount = 0
+        score = 0
         shuffleCards()
     }
 }

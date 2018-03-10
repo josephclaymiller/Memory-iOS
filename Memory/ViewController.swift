@@ -11,21 +11,18 @@ import UIKit
 class ViewController: UIViewController {
     var cardBackColor: UIColor = UIColor.black
     lazy var game = Memory(numberOfPairsOfCards: (cardButtons.count + 1)/2)
+    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var flipCountLabel: UILabel!
     @IBOutlet var cardButtons: [UIButton]!
     @IBOutlet weak var gameBoard: UIView!
     var emojiChoices = [String]() // chosen emoji set to use for a game
     var emoji = [Int:String]() // dictionary to track emojis used in game
-    var faceEmojis = ["😀","😁","😂","😃","😄","😅","😆","😇","😈","👿","😉","😊","☺️","😋","😌","😍","😎","😏","😐","😑","😒","😓","😔","😕","😖","😗","😘","😙","😚","😛","😜","😝","😞","😟","😠","😡","😢","😣","😤","😥","😦","😧","😨","😩","😪","😫","😬","😭","😮","😯","😰","😱","😲","😳","😴","😵","😶","😷","😸","😹","😺","😻","😼","😽","😾","😿","🙀"]
-    var animalEmojis = ["🐀","🐁","🐭","🐹","🐂","🐃","🐄","🐮","🐅","🐆","🐯","🐇","🐰","🐈","🐱","🐎","🐴","🐏","🐑","🐐","🐓","🐔","🐤","🐣","🐥","🐦","🐧","🐘","🐪","🐫","🐗","🐖","🐷","🐽","🐕","🐩","🐶","🐺","🐻","🐨","🐼","🐵","🙈","🙉","🙊","🐒","🐉","🐲","🐊","🐍","🐢","🐸","🐋","🐳","🐬","🐙","🐟","🐠","🐡","🐚","🐌","🐛","🐜","🐝","🐞"]
-    var plantEmojis = ["🌱","🌲","🌳","🌴","🌵","🌷","🌸","🌹","🌺","🌻","🌼","💐","🌾","🌿","🍀","🍁","🍂","🍃","🍄","🌰"]
-    var foodEmojis = ["🍅","🍆","🌽","🍠","🍇","🍈","🍉","🍊","🍋","🍌","🍍","🍎","🍏","🍐","🍑","🍒","🍓","🍔","🍕","🍖","🍗","🍘","🍙","🍚","🍛","🍜","🍝","🍞","🍟","🍡","🍢","🍣","🍤","🍥","🍦","🍧","🍨","🍩","🍪","🍫","🍬","🍭","🍮","🍯","🍰","🍱","🍲","🍳"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setRandomTheme()
     }
-    
+ 
     // Choose a random theme and update the view
     func setRandomTheme() {
         let newTheme = Theme.randomTheme()
@@ -75,6 +72,8 @@ class ViewController: UIViewController {
     }
     
     func updateViewFromModel() {
+        // Update score
+        scoreLabel.text = "Score: \(game.score)"
         // Update flip count
         flipCountLabel.text = "Flips: \(game.flipCount)"
         // Look at all the cards and see if there are matches
