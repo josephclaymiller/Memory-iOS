@@ -269,6 +269,7 @@
                     </view>
                     <connections>
                         <outlet property="flipCountLabel" destination="IB2-58-pLc" id="9NZ-qk-yev"/>
+                        <outlet property="gameBoard" destination="zVM-TM-Zr4" id="3qA-5o-wpn"/>
                         <outletCollection property="cardButtons" destination="zwA-YN-sQy" collectionClass="NSMutableArray" id="Rhp-vA-Tje"/>
                         <outletCollection property="cardButtons" destination="TEx-9b-hHE" collectionClass="NSMutableArray" id="3CA-eo-quY"/>
                         <outletCollection property="cardButtons" destination="Anp-3i-SAe" collectionClass="NSMutableArray" id="eY1-Wh-l35"/>

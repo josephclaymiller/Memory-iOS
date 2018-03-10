@@ -13,6 +13,7 @@
 		BB02A159204CEDF500448146 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB02A158204CEDF500448146 /* Assets.xcassets */; };
 		BB02A15C204CEDF500448146 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB02A15A204CEDF500448146 /* LaunchScreen.storyboard */; };
 		BB83CE952053283A001F93A8 /* Emojis.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83CE942053283A001F93A8 /* Emojis.swift */; };
+		BB83CE972053538E001F93A8 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB83CE962053538E001F93A8 /* Theme.swift */; };
 		BBEFB0F1204FA3F800812EB0 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEFB0F0204FA3F800812EB0 /* Memory.swift */; };
 		BBEFB0F3204FA4E100812EB0 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEFB0F2204FA4E100812EB0 /* Card.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +27,7 @@
 		BB02A15B204CEDF500448146 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BB02A15D204CEDF500448146 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB83CE942053283A001F93A8 /* Emojis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emojis.swift; sourceTree = "<group>"; };
+		BB83CE962053538E001F93A8 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BBEFB0F0204FA3F800812EB0 /* Memory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memory.swift; sourceTree = "<group>"; };
 		BBEFB0F2204FA4E100812EB0 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,6 +67,7 @@
 				BB83CE942053283A001F93A8 /* Emojis.swift */,
 				BBEFB0F0204FA3F800812EB0 /* Memory.swift */,
 				BBEFB0F2204FA4E100812EB0 /* Card.swift */,
+				BB83CE962053538E001F93A8 /* Theme.swift */,
 				BB02A155204CEDF500448146 /* Main.storyboard */,
 				BB02A158204CEDF500448146 /* Assets.xcassets */,
 				BB02A15A204CEDF500448146 /* LaunchScreen.storyboard */,
@@ -148,6 +151,7 @@
 				BBEFB0F1204FA3F800812EB0 /* Memory.swift in Sources */,
 				BB02A154204CEDF500448146 /* ViewController.swift in Sources */,
 				BB02A152204CEDF500448146 /* AppDelegate.swift in Sources */,
+				BB83CE972053538E001F93A8 /* Theme.swift in Sources */,
 				BB83CE952053283A001F93A8 /* Emojis.swift in Sources */,
 				BBEFB0F3204FA4E100812EB0 /* Card.swift in Sources */,
 			);

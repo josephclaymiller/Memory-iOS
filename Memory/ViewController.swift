@@ -9,31 +9,55 @@
 import UIKit
 
 class ViewController: UIViewController {
-    let cardBackColor = UIColor.cyan
+    var cardBackColor: UIColor = UIColor.black
     lazy var game = Memory(numberOfPairsOfCards: (cardButtons.count + 1)/2)
     @IBOutlet weak var flipCountLabel: UILabel!
     @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet weak var gameBoard: UIView!
     var emojiChoices = [String]() // chosen emoji set to use for a game
-    var emojiThemes = [[String]]() // themes of emojis to choose from for each game
     var emoji = [Int:String]() // dictionary to track emojis used in game
     var faceEmojis = ["😀","😁","😂","😃","😄","😅","😆","😇","😈","👿","😉","😊","☺️","😋","😌","😍","😎","😏","😐","😑","😒","😓","😔","😕","😖","😗","😘","😙","😚","😛","😜","😝","😞","😟","😠","😡","😢","😣","😤","😥","😦","😧","😨","😩","😪","😫","😬","😭","😮","😯","😰","😱","😲","😳","😴","😵","😶","😷","😸","😹","😺","😻","😼","😽","😾","😿","🙀"]
     var animalEmojis = ["🐀","🐁","🐭","🐹","🐂","🐃","🐄","🐮","🐅","🐆","🐯","🐇","🐰","🐈","🐱","🐎","🐴","🐏","🐑","🐐","🐓","🐔","🐤","🐣","🐥","🐦","🐧","🐘","🐪","🐫","🐗","🐖","🐷","🐽","🐕","🐩","🐶","🐺","🐻","🐨","🐼","🐵","🙈","🙉","🙊","🐒","🐉","🐲","🐊","🐍","🐢","🐸","🐋","🐳","🐬","🐙","🐟","🐠","🐡","🐚","🐌","🐛","🐜","🐝","🐞"]
     var plantEmojis = ["🌱","🌲","🌳","🌴","🌵","🌷","🌸","🌹","🌺","🌻","🌼","💐","🌾","🌿","🍀","🍁","🍂","🍃","🍄","🌰"]
     var foodEmojis = ["🍅","🍆","🌽","🍠","🍇","🍈","🍉","🍊","🍋","🍌","🍍","🍎","🍏","🍐","🍑","🍒","🍓","🍔","🍕","🍖","🍗","🍘","🍙","🍚","🍛","🍜","🍝","🍞","🍟","🍡","🍢","🍣","🍤","🍥","🍦","🍧","🍨","🍩","🍪","🍫","🍬","🍭","🍮","🍯","🍰","🍱","🍲","🍳"]
 
-    // TODO: Choose a random theme each time a new game starts
     override func viewDidLoad() {
         super.viewDidLoad()
-        emojiThemes = [faceEmojis, animalEmojis, plantEmojis, foodEmojis]
-        emojiChoices = emojiThemes[Int(arc4random_uniform(UInt32(emojiThemes.count)))]
+        setRandomTheme()
+    }
+    
+    // Choose a random theme and update the view
+    func setRandomTheme() {
+        let newTheme = Theme.randomTheme()
+        setTheme(newTheme)
         updateViewFromModel()
+    }
+    
+    func setTheme(_ newTheme: Theme) {
+        switch newTheme {
+        case .animals:
+            emojiChoices = animalEmojis
+            gameBoard.backgroundColor = UIColor.cyan
+            cardBackColor = UIColor.orange
+        case .plants:
+            emojiChoices = plantEmojis
+            gameBoard.backgroundColor = UIColor.brown
+            cardBackColor = UIColor.green
+        case .food:
+            emojiChoices = foodEmojis
+            gameBoard.backgroundColor = UIColor.red
+            cardBackColor = UIColor.brown
+        default:
+            emojiChoices = faceEmojis
+            gameBoard.backgroundColor = UIColor.purple
+            cardBackColor = UIColor.orange
+        }
     }
     
     @IBAction func pressNewGameButton(_ sender: UIButton) {
         game.resetGame()
         emoji = [Int:String]() // empty emoji array
-        emojiChoices = emojiThemes[Int(arc4random_uniform(UInt32(emojiThemes.count)))]
-        updateViewFromModel()
+        setRandomTheme()
     }
     
     @IBAction func touchCard(_ sender: UIButton) {
