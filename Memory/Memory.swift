@@ -57,6 +57,10 @@ class Memory {
                         score -= 1
                     }
                 }
+                // Ensure score stays positive
+                if score < 0 {
+                    score = 0
+                }
                 cards[index].isFaceUp = true
                 indexOfFaceUpCard = nil
                 seenCardIndicies.append(matchIndex)
