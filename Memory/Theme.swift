@@ -13,8 +13,10 @@ enum Theme {
     case animals
     case plants
     case food
+    case animalHeads
+    case catHeads
     
-    private static let max = 4
+    private static let max = 6
     
     static func randomTheme() -> Theme {
         let rand = Int(arc4random_uniform(UInt32(max)))
@@ -25,6 +27,10 @@ enum Theme {
             return Theme.plants
         case 2:
             return Theme.food
+        case 3:
+            return Theme.animalHeads
+        case 4:
+            return Theme.catHeads
         default:
             return Theme.faces
         }
