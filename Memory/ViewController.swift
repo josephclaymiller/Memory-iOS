@@ -102,6 +102,9 @@ class ViewController: UIViewController {
                 button.setTitle("", for: UIControlState.normal)
                 button.backgroundColor = card.isMatched ? UIColor.clear : cardBackColor
             }
+            // rounded corners
+            button.layer.cornerRadius = 10
+            button.clipsToBounds = true
         }
     }
     
