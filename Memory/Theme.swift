@@ -16,10 +16,11 @@ enum Theme {
     case animalHeads
     case catHeads
     
-    private static let max = 6
+    private static let levelThemes: [Theme] = [.catHeads, .animalHeads, .plants, .animals, .food, .faces]
+    
     
     static func randomTheme() -> Theme {
-        let rand = Int(arc4random_uniform(UInt32(max)))
+        let rand = Int(arc4random_uniform(UInt32(5)))
         switch rand {
         case 0:
             return Theme.animals
@@ -29,10 +30,12 @@ enum Theme {
             return Theme.food
         case 3:
             return Theme.animalHeads
-        case 4:
-            return Theme.catHeads
         default:
             return Theme.faces
         }
+    }
+    
+    static func themeFor(level: Int) -> Theme {
+        return levelThemes[level]
     }
 }

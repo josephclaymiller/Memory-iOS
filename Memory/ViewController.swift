@@ -12,20 +12,76 @@ class ViewController: UIViewController {
     var cardBackColor: UIColor = UIColor.black
     var cardFrontColor: UIColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
     var cardBorderColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    lazy var game = Memory(numberOfPairsOfCards: (cardButtons.count + 1)/2)
+    @IBOutlet var level1Buttons: [UIButton]!
+    @IBOutlet var level2Buttons: [UIButton]!
+    @IBOutlet var level3Buttons: [UIButton]!
+    @IBOutlet var level4Buttons: [UIButton]!
+    @IBOutlet var level5Buttons: [UIButton]!
+    @IBOutlet var level6Buttons: [UIButton]!
+    @IBOutlet var level7Buttons: [UIButton]!
+    @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var flipCountLabel: UILabel!
     @IBOutlet var cardButtons: [UIButton]!
     @IBOutlet weak var gameBoard: UIView!
+    @IBOutlet weak var newGameButton: UIButton!
+    @IBOutlet weak var totalScoreLabel: UILabel!
     var emojiChoices = [String]() // chosen emoji set to use for a game
     var emoji = [Int:String]() // dictionary to track emojis used in game
-
+    var cardsPerLevel: [[UIButton]] = []
+    lazy var visibleCards: [UIButton] = level1Buttons
+    lazy var cardPairs = visibleCards.count/2
+    var memoryGame: Game = Game()
+    var maxLevel = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setRandomTheme()
+        level2Buttons.append(contentsOf: level1Buttons)
+        level3Buttons.append(contentsOf: level2Buttons)
+        level4Buttons.append(contentsOf: level3Buttons)
+        level5Buttons.append(contentsOf: level4Buttons)
+        level6Buttons.append(contentsOf: level5Buttons)
+        level7Buttons.append(contentsOf: level6Buttons)
+        cardsPerLevel.append(level1Buttons)
+        cardsPerLevel.append(level2Buttons)
+        //cardsPerLevel.append(level3Buttons)
+        cardsPerLevel.append(level4Buttons)
+        cardsPerLevel.append(level5Buttons)
+        cardsPerLevel.append(level6Buttons)
+        cardsPerLevel.append(level7Buttons)
+        maxLevel = cardsPerLevel.count
+        setUpLevel(level: 0)
     }
- 
-    // Choose a random theme and update the view
+    
+    func setUpLevel(level: Int) {
+        visibleCards = (level < maxLevel) ? cardsPerLevel[level] : cardsPerLevel[maxLevel-1]
+        cardPairs = visibleCards.count/2
+        memoryGame.setUpCards(numberOfPairsOfCards: cardPairs)
+        emoji = [Int:String]() // empty seen emoji array
+        hideExtraCards()
+        if level >= maxLevel {
+            setRandomTheme()
+        } else {
+            setLevelTheme()
+        }
+    }
+    
+    func hideExtraCards() {
+        for card in cardButtons {
+            if visibleCards.contains(card) {
+               card.isHidden = false
+            } else {
+                card.isHidden = true
+            }
+        }
+    }
+  
+    func setLevelTheme() {
+        let newTheme = Theme.themeFor(level: memoryGame.level)
+        setTheme(newTheme)
+        hideExtraCards()
+        updateViewFromModel()
+    }
+    
     func setRandomTheme() {
         let newTheme = Theme.randomTheme()
         setTheme(newTheme)
@@ -74,15 +130,14 @@ class ViewController: UIViewController {
     }
     
     @IBAction func pressNewGameButton(_ sender: UIButton) {
-        game.resetGame()
-        emoji = [Int:String]() // empty emoji array
-        setRandomTheme()
+        memoryGame.resetLevel()
+        setUpLevel(level: memoryGame.level)
     }
     
     @IBAction func touchCard(_ sender: UIButton) {
-        if let cardNumber = cardButtons.index(of: sender) {
+        if let cardNumber = visibleCards.index(of: sender) {
             print("card number = \(cardNumber)")
-            if game.chooseCard(at: cardNumber){
+            if memoryGame.game.chooseCard(at: cardNumber){
                 print("Flipped card")
             } else {
                 print("Can not select that card")
@@ -94,14 +149,15 @@ class ViewController: UIViewController {
     }
     
     func updateViewFromModel() {
+        // Update Title
+        levelLabel.text = "Level \(memoryGame.level+1)"
         // Update score
-        scoreLabel.text = "Score: \(game.score)"
-        // Update flip count
-        flipCountLabel.text = "Flips: \(game.flipCount)"
+        scoreLabel.text = "Level Score: \(memoryGame.game.score)"
+        totalScoreLabel.text = "Score: \(memoryGame.totalScore)"
         // Look at all the cards and see if there are matches
-        for index in cardButtons.indices {
-            let button = cardButtons[index]
-            let card = game.cards[index]
+        for index in visibleCards.indices {
+            let button = visibleCards[index]
+            let card = memoryGame.game.cards[index]
             if card.isFaceUp {
                 button.setTitle(emoji(for: card), for: UIControlState.normal)
                 button.backgroundColor = cardFrontColor
@@ -122,6 +178,10 @@ class ViewController: UIViewController {
                 button.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
             }
         }
+        // Change the button text if the board is cleared
+        if memoryGame.game.boardCleared {
+            newGameButton.titleLabel?.text = "Next Level"
+        }
     }
     
     func emoji(for card: Card) -> String {
@@ -129,7 +189,6 @@ class ViewController: UIViewController {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
         }
-        print(emoji[card.identifier] ?? "?")
         return emoji[card.identifier] ?? "?"
     }
     

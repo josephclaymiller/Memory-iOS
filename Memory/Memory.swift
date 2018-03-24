@@ -18,8 +18,17 @@ class Memory {
     var flipCount = 0
     var score = 0
     var seenCardIndicies = [Int]()
+    var boardCleared: Bool {
+        get {
+            for card in cards {
+                if !card.isMatched { return false }
+            }
+            return true
+        }
+    }
     
-    init(numberOfPairsOfCards: Int) {
+    func setUpCards(numberOfPairsOfCards: Int) {
+        cards = [Card]()
         for _ in 1...numberOfPairsOfCards {
             let card = Card()
             cards += [card, card]
@@ -27,7 +36,6 @@ class Memory {
         shuffleCards()
     }
     
-    // shuffle the cards
     func shuffleCards() {
         var shuffledCards = [Card]()
         for _ in 0..<(cards.count) {
